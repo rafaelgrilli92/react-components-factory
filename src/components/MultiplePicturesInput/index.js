@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './style.css';
+
+import Item from './item';
 
 const propTypes = {
-
+    onChange: PropTypes.func,
+    pictures: PropTypes.arrayOf(
+        PropTypes.objectOf({
+            file: PropTypes.object.isRequired,
+            previewUrl: PropTypes.string.isRequired
+        }).isRequired
+    )
 }
 
 const defaultProps = {
@@ -42,34 +51,38 @@ class MultiplePicturesInput extends Component {
         reader.readAsDataURL(file)
     }
 
-    onRemoveFile = (e) => {
-        
+    onRemoveFile = (index) => {
+        let { pictures } = this.state;
+        pictures.splice(index, 1);
+        this.setState({ pictures});
     }
 
     onClickAdd = () => {
+        this.refs.input.value = "";
         this.refs.input.click();
     }
 
     render() {
         let s = this.state;
         return (
-            <div className="row">
-                {
-                    s.pictures.map((pic, index) => {
-                        return (
-                            <div className="col-xs-6 col-sm-3 col-lg-2">
-                                <img style={{height: "100px"}} src={pic.previewUrl} alt={`Image ${index+1}`}/>
-                                <a onClick={() => this.onRemoveFile(index)}>Remove</a>
-                            </div>
-                        )
-                    })
-                }
-                <div className="col-xs-6 col-sm-3 col-md-3 col-lg-2">
-                    <div className="hidden">
-                        <input ref="input" onChange={this.onAddFile} type="file" id="fileInput" name="fileInput" />
-                    </div>
-                    <i onClick={this.onClickAdd} className="fa fa-3x fa-plus"></i>
-                </div>
+            <div className="mpi-main mpi-primary">
+                <ul className="list list-inline">
+                    {
+                        s.pictures.map((picture, index) => {
+                            let { previewUrl } = picture;
+                            let props = { index, onRemoveFile: this.onRemoveFile, previewUrl };
+                            return (
+                                <Item key={index} {...props} />
+                            )
+                        })
+                    }
+                    <li>
+                        <div className="hidden">
+                            <input ref="input" onChange={this.onAddFile} type="file" id="fileInput" name="fileInput" />
+                        </div>
+                        <i onClick={this.onClickAdd} className="fa fa-3x fa-plus"></i>
+                    </li>
+                </ul>
             </div>
         )
     }

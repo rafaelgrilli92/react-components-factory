@@ -2,6 +2,9 @@ import React from 'react';
 import logo from '../logo.svg';
 import ComponentBox from './ComponentBox'
 
+// Components
+import MultiplePicturesInput from '../components/MultiplePicturesInput'
+
 export default () =>
 <div className="App">
   <div className="App-header">
@@ -10,6 +13,7 @@ export default () =>
   </div>
   <div className="container">
     <ComponentBox title="Multiple Pictures Input">
+      <MultiplePicturesInput />
     </ComponentBox>
   </div>
 </div>
