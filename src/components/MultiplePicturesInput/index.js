@@ -80,7 +80,9 @@ class MultiplePicturesInput extends Component {
                         <div className="hidden">
                             <input ref="input" onChange={this.onAddFile} type="file" id="fileInput" name="fileInput" />
                         </div>
-                        <i onClick={this.onClickAdd} className="fa fa-3x fa-plus"></i>
+                        <a className="mpi-add-btn" onClick={this.onClickAdd}>
+                            <i className="fa fa-plus"></i>
+                        </a>
                     </li>
                 </ul>
             </div>

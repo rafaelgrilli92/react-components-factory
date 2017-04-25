@@ -1,0 +1,38 @@
+.mpi-main {
+    
+}
+
+.mpi-add-btn {
+    font-size: 50px;
+}
+
+.mpi-main .mpi-item > img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 120px;  
+}
+
+.mpi-remove-btn {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    cursor: pointer;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 2px;
+    text-align: center;
+}
+
+.mpi-main.mpi-primary .mpi-remove-btn {
+    background-color: #3c8dbc;
+    color: #fff;
+}
+
+.mpi-main.mpi-primary .mpi-remove-btn:hover {
+    background-color: #367fa9;  
+}
+
+.mpi-main.mpi-primary .mpi-remove-btn:active {
+    background-color: #204d74;
+}
+
