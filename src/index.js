@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MainContent from './MainContent';
+import MainContent from './containers/MainContent';
 import './index.css';
 
 // CSS Libs
