@@ -8,19 +8,21 @@ export default {
     @param {Function} callback Callback function.
 	@return {object} File object
 	*/
-    resizeImage : (imgFile, quality = 0.8, callback) => {
+    resizeImage : (imgFile, quality, callback) => {
         let reader = new FileReader();
         reader.readAsDataURL(imgFile)
         reader.onloadend = () => {
             let img = document.createElement('img');
             img.src = reader.result;
-            let canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            let ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            var dataURL = canvas.toDataURL('image/jpg', quality);
-            return callback(null, dataURLtoFile(dataURL), reader.result);
+            img.onload = () => {
+                let canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                let ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                var dataURL = canvas.toDataURL('image/jpeg', quality);
+                return callback(null, dataURLtoFile(dataURL), dataURL);
+            }
         }
 
         function dataURLtoFile(dataURL) {
@@ -37,7 +39,7 @@ export default {
                 ia[i] = byteString.charCodeAt(i);
             }
             
-            return new File([ia], 'image.jpg', {type: mimeString, lastModified: Date.now()});
+            return new File([ia], 'image.jpg', {type: 'image/jpeg', lastModified: Date.now()});
         }
     }
 }

@@ -10,7 +10,7 @@ const propTypes = {
     pictures: PropTypes.arrayOf(
         PropTypes.objectOf({
             file: PropTypes.object.isRequired,
-            previewUrl: PropTypes.string.isRequired
+            dataURL: PropTypes.string.isRequired
         }).isRequired
     )
 }
@@ -24,8 +24,7 @@ class MultiplePicturesInput extends Component {
         super();
 
         this.state = {
-            files: [],
-            previewImages: [],
+            pictures: [],
             isLoading: false
         }
     }
@@ -33,7 +32,7 @@ class MultiplePicturesInput extends Component {
     onChange = () => {
         var { id, onChange } = this.props;
         if(onChange) {
-            return onChange(this.state.files, id);
+            return onChange(this.state.pictures, id);
         }
     }
 
@@ -42,23 +41,25 @@ class MultiplePicturesInput extends Component {
         this.setState({ isLoading: true })
 
         helper.resizeImage(file, this.props.quality, (error, file, dataURL) => {
-            var { files, previewImages } = this.state;
-            files.push(file);
-            previewImages.push(dataURL);
+            let pictures = this.state.pictures;
+            pictures.push({
+                file,
+                dataURL
+            });
 
-            this.setState({
+            return this.setState({
                 isLoading: false,
-                files,
-                previewImages
-            })
+                pictures
+            }, this.onChange)
         });
     }
 
     onRemoveFile = (index) => {
-        var { files, previewImages } = this.state;
-        files.splice(index, 1);
-        previewImages.splice(index, 1);
-        this.setState({ files, previewImages });
+        let pictures = this.state.pictures;
+        pictures.splice(index, 1);
+        return this.setState({ 
+            pictures 
+        }, this.onChange);
     }
 
     onClickAdd = () => {
@@ -72,7 +73,8 @@ class MultiplePicturesInput extends Component {
             <div className="mpi-main mpi-primary">
                 <ul className="list list-inline">
                     {
-                        s.previewImages.map((dataURL, index) => {
+                        s.pictures.map((picture, index) => {
+                            let { dataURL } = picture;
                             let props = { index, onRemoveFile: this.onRemoveFile, dataURL };
                             return (
                                 <Item key={index} {...props} />
