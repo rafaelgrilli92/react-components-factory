@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
-
+import helper from './helper';
 import Item from './item';
 
 const propTypes = {
+    id: PropTypes.string,
     onChange: PropTypes.func,
     pictures: PropTypes.arrayOf(
         PropTypes.objectOf({
@@ -15,7 +16,7 @@ const propTypes = {
 }
 
 const defaultProps = {
-
+    quality: 0.8
 }
 
 class MultiplePicturesInput extends Component {
@@ -23,38 +24,41 @@ class MultiplePicturesInput extends Component {
         super();
 
         this.state = {
-            pictures: [],
-            loading: false
+            files: [],
+            previewImages: [],
+            isLoading: false
+        }
+    }
+
+    onChange = () => {
+        var { id, onChange } = this.props;
+        if(onChange) {
+            return onChange(this.state.files, id);
         }
     }
 
     onAddFile = (e) => {
-        let { pictures } = this.state;
-        let reader = new FileReader();
         let file = e.target.files[0];
+        this.setState({ isLoading: true })
 
-        reader.onloadstart = () => {
-            this.setState({ loading: true })
-        }
+        helper.resizeImage(file, this.props.quality, (error, file, dataURL) => {
+            var { files, previewImages } = this.state;
+            files.push(file);
+            previewImages.push(dataURL);
 
-        reader.onloadend = () => {
-            pictures.push({
-                file: file,
-                previewUrl: reader.result
-            })
             this.setState({
-                loading: false,
-                pictures
-            });
-        }
-
-        reader.readAsDataURL(file)
+                isLoading: false,
+                files,
+                previewImages
+            })
+        });
     }
 
     onRemoveFile = (index) => {
-        let { pictures } = this.state;
-        pictures.splice(index, 1);
-        this.setState({ pictures});
+        var { files, previewImages } = this.state;
+        files.splice(index, 1);
+        previewImages.splice(index, 1);
+        this.setState({ files, previewImages });
     }
 
     onClickAdd = () => {
@@ -68,21 +72,29 @@ class MultiplePicturesInput extends Component {
             <div className="mpi-main mpi-primary">
                 <ul className="list list-inline">
                     {
-                        s.pictures.map((picture, index) => {
-                            let { previewUrl } = picture;
-                            let props = { index, onRemoveFile: this.onRemoveFile, previewUrl };
+                        s.previewImages.map((dataURL, index) => {
+                            let props = { index, onRemoveFile: this.onRemoveFile, dataURL };
                             return (
                                 <Item key={index} {...props} />
                             )
                         })
                     }
                     <li>
-                        <div className="hidden">
-                            <input ref="input" onChange={this.onAddFile} type="file" id="fileInput" name="fileInput" />
-                        </div>
-                        <a className="mpi-add-btn" onClick={this.onClickAdd}>
-                            <i className="fa fa-plus"></i>
-                        </a>
+                        {
+                            s.isLoading ? (
+                                <i className="fa fa-3x fa-refresh fa-spin"></i>
+                            ) : (
+                                <div>
+                                    <div className="hidden">
+                                        <input ref="input" onChange={this.onAddFile} type="file"
+                                        id="fileInput" name="fileInput" capture="true" accept="image/*" />
+                                    </div>
+                                    <a className="mpi-add-btn" onClick={this.onClickAdd}>
+                                        <i className="fa fa-plus"></i>
+                                    </a>
+                                </div>
+                            )
+                        }
                     </li>
                 </ul>
             </div>

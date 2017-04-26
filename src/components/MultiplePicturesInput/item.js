@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 const propTypes = {
     index: PropTypes.number.isRequired,
     onRemoveFile: PropTypes.func.isRequired,
-    previewUrl: PropTypes.string.isRequired
+    dataURL: PropTypes.string.isRequired
 }
 
 const Item = ({
     index,
     onRemoveFile,
-    previewUrl
+    dataURL
 }) =>
 <li className="mpi-item">
-    <img src={previewUrl} alt={`Upload ${index + 1}`}/>
+    <img src={dataURL} alt={`Upload ${index + 1}`}/>
     <a onClick={() => onRemoveFile(index)} className="mpi-remove-btn">
         Remove
     </a>
