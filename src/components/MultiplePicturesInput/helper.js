@@ -39,7 +39,7 @@ export default {
                 ia[i] = byteString.charCodeAt(i);
             }
             
-            return new File([ia], 'image.jpg', {type: 'image/jpeg', lastModified: Date.now()});
+            return new File([ia], 'image.jpg', {type: mimeString, lastModified: Date.now()});
         }
     }
 }
