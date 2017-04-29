@@ -1,6 +1,29 @@
+function dataURLtoFile(dataURL) {
+    var byteString;
+    if (dataURL.split(',')[0].indexOf('base64') >= 0) 
+        byteString = atob(dataURL.split(',')[1]);
+    else 
+        byteString = unescape(dataURL.split(',')[1]);
+    
+    var mimeString = dataURL
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
+
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new File([ia], 'image.jpg', {
+        type: mimeString,
+        lastModified: Date.now()
+    });
+}
+
 export default {
     /**
-	Change the image quality reducing pixels
+	Change the image quality reducing pixels and convert to JPEG
 	@author Rafael Grilli
 	@method resizeImage
 	@param {Object} img File object.
@@ -8,7 +31,7 @@ export default {
     @param {Function} callback Callback function.
 	@return {object} File object
 	*/
-    resizeImage : (imgFile, quality, callback) => {
+    resizeImage : (imgFile, quality = 0.9, callback) => {
         let reader = new FileReader();
         reader.readAsDataURL(imgFile)
         reader.onloadend = () => {
@@ -23,23 +46,6 @@ export default {
                 var dataURL = canvas.toDataURL('image/jpeg', quality);
                 return callback(null, dataURLtoFile(dataURL), dataURL);
             }
-        }
-
-        function dataURLtoFile(dataURL) {
-            var byteString;
-            if (dataURL.split(',')[0].indexOf('base64') >= 0)
-                byteString = atob(dataURL.split(',')[1]);
-            else
-                byteString = unescape(dataURL.split(',')[1]);
-
-            var mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
-
-            var ia = new Uint8Array(byteString.length);
-            for (var i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-            
-            return new File([ia], 'image.jpg', {type: mimeString, lastModified: Date.now()});
         }
     }
 }
