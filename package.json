@@ -5,10 +5,16 @@
   "dependencies": {
     "admin-lte": "^2.3.11",
     "bootstrap": "^3.3.7",
+    "exif-js": "^2.2.1",
+    "exif-parser": "^0.1.9",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "pica": "^3.0.4",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "signature_pad": "^2.1.1"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

@@ -12,7 +12,8 @@ const propTypes = {
             file: PropTypes.object.isRequired,
             dataURL: PropTypes.string.isRequired
         }).isRequired
-    )
+    ),
+    quality: PropTypes.number
 }
 
 const defaultProps = {
@@ -38,20 +39,27 @@ class MultiplePicturesInput extends Component {
 
     onAddFile = (e) => {
         let file = e.target.files[0];
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true }, () => {
+            setTimeout(() => {
+                helper.changeImageQuality(file, this.props.quality, (resizedFile, imgDataURL) => {
+                    let reader = new FileReader();
+                    reader.readAsDataURL(resizedFile);
+                    reader.onload = () => {
+                        let dataURL = reader.result;
+                        let pictures = this.state.pictures;
+                        pictures.push({
+                            dataURL
+                        });
 
-        helper.resizeImage(file, this.props.quality, (error, file, dataURL) => {
-            let pictures = this.state.pictures;
-            pictures.push({
-                file,
-                dataURL
-            });
-
-            return this.setState({
-                isLoading: false,
-                pictures
-            }, this.onChange)
-        });
+                        pictures[pictures.length - 1].file = resizedFile;
+                        this.setState({
+                            isLoading: false,
+                            pictures
+                        }, this.onChange)
+                    }
+                });
+            }, 700)
+        })
     }
 
     onRemoveFile = (index) => {
@@ -70,7 +78,7 @@ class MultiplePicturesInput extends Component {
     render() {
         let s = this.state;
         return (
-            <div className="mpi-main mpi-primary">
+            <div className="mpi-main mpi-danger">
                 <ul className="list list-inline">
                     {
                         s.pictures.map((picture, index) => {

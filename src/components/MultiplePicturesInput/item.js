@@ -15,7 +15,7 @@ const Item = ({
 <li className="mpi-item">
     <img src={dataURL} alt={`Upload ${index + 1}`}/>
     <a onClick={() => onRemoveFile(index)} className="mpi-remove-btn">
-        Remove
+        <i className="fa fa-trash"></i>
     </a>
 </li>
 

@@ -1,5 +1,5 @@
 .mpi-main {
-    
+    margin-bottom: 20px;
 }
 
 .mpi-add-btn {
@@ -10,7 +10,7 @@
 .mpi-main .mpi-item > img {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    height: 120px;  
+    height: 11vh;
 }
 
 .mpi-remove-btn {
@@ -18,9 +18,9 @@
     border-bottom-right-radius: 10px;
     cursor: pointer;
     display: block;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
-    padding: 4px;
+    padding: 1px;
     text-align: center;
 }
 
@@ -35,5 +35,18 @@
 
 .mpi-main.mpi-primary .mpi-remove-btn:active {
     background-color: #204d74;
+}
+
+.mpi-main.mpi-danger .mpi-remove-btn {
+    background-color: #bf493a;;
+    color: #fff;
+}
+
+.mpi-main.mpi-danger .mpi-remove-btn:hover {
+    background-color: #a53f32;  
+}
+
+.mpi-main.mpi-danger .mpi-remove-btn:active {
+    background-color: #823026;
 }
 
