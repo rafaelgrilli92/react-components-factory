@@ -12,8 +12,8 @@ import 'admin-lte/dist/css/AdminLTE.min.css'; // AdminLTE
 import 'admin-lte/dist/css/skins/_all-skins.min.css'; // Skins AdminLTE
 
 // JS Libs
-import $ from 'jquery'; // jQuery
-window.jQuery = window.$ = $;
+// import $ from 'jquery'; // jQuery
+// window.jQuery = window.$ = $;
 
 require('bootstrap') // Bootstrap
 
